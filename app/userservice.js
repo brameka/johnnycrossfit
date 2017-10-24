@@ -1,20 +1,26 @@
 'use strict';
 
-module.exports = function() {
+module.exports = function(db) {
 
-	var getUser = function(db, facebookId) {
+	var getUsers = function(facebookId) {
+		var ref = db.ref('users');
+		return ref.once('value');
+	}
+
+	var getUser = function(facebookId) {
 		var ref = db.ref('users/' + facebookId);
 		return ref.once('value');
 	}
 
-	var createUser = function(db, facebookId) {
+	var createUser = function(facebookId) {
 		var users = db.ref('users/' + facebookId).set({
-			name: 'bronr'
+			name: 'test'
 		});
 	}
 
 	return {
     getUser: getUser,
+		getUsers: getUsers,
 		createUser: createUser
   }
 

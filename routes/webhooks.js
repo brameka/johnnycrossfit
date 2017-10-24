@@ -1,23 +1,30 @@
 var request = require('request');
 var bot = require('../app/botservice')();
-var users = require('../app/userservice')();
+
 
 module.exports = function(app, router, database){
 
+	var users = require('../app/userservice')(database);
+
 	var VALIDATION_TOKEN = "slay_me";
 
-		router.get('/users', function(req, res) {
-			users.createUser(database, 'fb111');
+		router.get('/users/create', function(req, res) {
+			users.createUser('fb222');
 			res.status(200).send('test');
 		});
 
-		router.get('/get-user', function(req, res) {
-			// users.getUser(database, 'fb111').then(function(snapshot){
-			// 	res.status(200).send(snapshot.val());
-			// })
-			var ref = database.ref('users').once('value').then(function(snapshot){
+		router.get('/users/all', function(req, res) {
+			users.getUsers().then(function(snapshot) {
 				res.status(200).send(snapshot.val());
-			}).catch(function(error){
+			}).catch(function(error) {
+				res.status(404).send('something went wrong with the fb query');
+			})
+		});
+
+		router.get('/users/fb222', function(req, res) {
+			users.getUser('fb222').then(function(snapshot) {
+				res.status(200).send(snapshot.val());
+			}).catch(function(error) {
 				res.status(404).send('something went wrong with the fb query');
 			})
 		});
