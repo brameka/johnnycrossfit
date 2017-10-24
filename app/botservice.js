@@ -138,13 +138,11 @@ module.exports = function() {
   // todo: persist to firebase
   var findOrCreateSession = (fbid) => {
     let sessionId;
-
     Object.keys(sessions).forEach(k => {
       if (sessions[k].fbid === fbid) {
         sessionId = k;
       }
     });
-
     if (!sessionId) {
         // No session found for user fbid, let's create a new one
         sessionId = new Date().toISOString();

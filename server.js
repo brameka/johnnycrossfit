@@ -12,6 +12,7 @@
 var express    = require('express');
 var app        = express();
 var bodyParser = require('body-parser');
+var firebase   = require('./app/fireservice')();
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -23,8 +24,8 @@ var port = process.env.PORT || 8098;        // set our port
 // ROUTES FOR OUR API
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
-
-var webhooks = require("./routes/webhooks")(app, router);
+var database = firebase.database();
+var webhooks = require("./routes/webhooks")(app, router, database);
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {

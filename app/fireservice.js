@@ -1,24 +1,32 @@
 'use strict';
 
-var admin = require("firebase-admin");
+var firebase = require("firebase-admin");
 
 module.exports = function() {
 
-	var app = function() {
+	var admin = function() {
 		// fire service account: firebase-adminsdk-681x8@johnnycrossfit-399db.iam.gserviceaccount.com
 		var serviceAccount = require("../keys/johnnycrossfit-399db-firebase-adminsdk-681x8-1a0ee8cc34.json");
-		var app = admin.initializeApp({
-			credential: admin.credential.cert(serviceAccount),
+		var admin = firebase.initializeApp({
+			credential: firebase.credential.cert(serviceAccount),
 			databaseURL: "https://johnnycrossfit-399db.firebaseio.com"
 		});
-		return app;
+		console.log('app: ' + admin);
+		return admin;
 	}
 
-	var receive = function(event) {
-  };
+	var database = function() {
+		var serviceAccount = require("../keys/johnnycrossfit-399db-firebase-adminsdk-681x8-1a0ee8cc34.json");
+		var admin = firebase.initializeApp({
+			credential: firebase.credential.cert(serviceAccount),
+			databaseURL: "https://johnnycrossfit-399db.firebaseio.com"
+		});
+		return admin.database();
+	}
 
 	return {
-    app: app
+    admin: admin,
+		database: database
   }
 
 }

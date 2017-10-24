@@ -1,5 +1,7 @@
 'use strict';
 
+var fire = require('../app/fireservice')();
+
 module.exports = function() {
 
   const PAGE_ACCESS_TOKEN = 'EAARF62yuwKgBALGMevxwZAh1HWoZBmw3at6iC7qLwnMiXWq7ukVzLAs4d5cBucyrVHWEcJeBEr9Xz2ohccHjbN22a8PHPOoOHtuKDxfcFMiLHCZCNgat8F2M4UWbC8KdLZAllzxHGwZAF4g147rPHdjfNxI91MFu2EFTfiBEm6AZDZD';
