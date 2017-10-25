@@ -6,7 +6,7 @@ module.exports = function(app, router, database){
 
 	var users = require('../app/userservice')(database);
 
-	var VALIDATION_TOKEN = "slay_me";
+	var VALIDATION_TOKEN = "murph_grace_jackie_johnny";
 
 		router.get('/users/create', function(req, res) {
 			users.createUser('fb222');
@@ -37,7 +37,6 @@ module.exports = function(app, router, database){
 		    console.error("Failed validation. Make sure the validation tokens match.");
 		    res.sendStatus(403);          
 	  	} 
-
     });
 
     router.post('/hook', function(req, res) {
