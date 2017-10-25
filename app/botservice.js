@@ -12,6 +12,25 @@ module.exports = function() {
   const TYPING_OFF = 'typing_off';
   const sessions = {};
 
+	var postback = function(event) {
+	  var senderId = event.sender.id;
+	  var recipientId = event.recipient.id;
+	  var timeOfPostback = event.timestamp;
+	  var payload = event.postback.payload;
+
+	  console.log("Received postback for user %d and page %d with payload '%s' at %d", senderId, recipientId, payload, timeOfPostback);
+
+	  var data = {
+				recipient: {
+					id: senderId 
+				},
+				message: {
+					text: payload
+				}
+		};
+	  send(data);
+	}
+
   var receive = function(event) {
     var senderId = event.sender.id;
     var recipientId = event.recipient.id;
@@ -200,6 +219,7 @@ module.exports = function() {
   };
 
   return {
-    receive: receive
+    receive: receive,
+		postback: postback
   }
 }
