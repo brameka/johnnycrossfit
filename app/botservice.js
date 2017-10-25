@@ -40,11 +40,11 @@ module.exports = function() {
 		}, 5000);
   }
 
-  var process = function(senderId, message) {
-    sendAction(senderId, TYPING_ON);
-    var response = scottie.process(senderId, message);
-    sendMessage(senderId, text);
-  };
+  // var process = function(senderId, message) {
+  //   sendAction(senderId, TYPING_ON);
+  //   var response = scottie.process(senderId, message);
+  //   sendMessage(senderId, text);
+  // };
 
   var sendMessage = function(recipientId, messageText) {
 		var messageData = {
@@ -101,37 +101,81 @@ module.exports = function() {
 	          template_type: "generic",
 	          elements: [
 	          	{
-		            title: "Reward",
-		            subtitle: "Next-generation virtual reality",
-		            item_url: "https://www.oculus.com/en-us/rift/",               
-		            image_url: "http://cdn-mf1.heartyhosting.com/sites/mensfitness.com/files/rehband_crossfit_2_main.jpg",
+		            title: "Bergerun Beep Test",
+		            subtitle: "Death By EMOM,\n7 Pull-ups,\n7 Thrusters 35/25kg,\n7 Burpees",
+		            item_url: "",               
+		            image_url: "http://crossfitkumba.com/wp-content/uploads/2014/07/crossfit-kumba-box.jpg",
 		            buttons: [{
-		              type: "web_url",
-		              url: "https://www.oculus.com/en-us/rift/",
-		              title: "Open Web URL"
-		            }, {
-		              type: "postback",
-		              title: "Call Postback",
-		              payload: "Payload for first bubble",
-		            }],
+		              type: "element_share",
+		              
+									share_contents: { 
+						      attachment: {
+										type: "template",
+										payload: {
+													template_type: "generic",
+													elements: [
+														{
+															title: "Bergerun Beep Test",
+															subtitle: "Death By EMOM,\n7 Pull-ups,\n7 Thrusters 35/25kg,\n7 Burpees",
+															image_url: "http://crossfitkumba.com/wp-content/uploads/2014/07/crossfit-kumba-box.jpg",
+															default_action: {
+																type: "web_url",
+																url: "https://www.oculus.com/en-us/rift/"
+															},
+															buttons: [
+																{
+																	type: "web_url",
+																	url: "http://m.me/johnnycrossfit.me?ref=invited_by_24601", 
+																	title: "Can YOU dig it?"
+																}
+															]
+														}
+													]
+												}
+						      }
+		            }
+							}],
 		        }, {
-		            title: "touch",
-		            subtitle: "Your Hands, Now in VR",
+		            title: "Murph",
+		            subtitle: "5 Rounds\n20 Pull-ups,\n40 Push-ups,\n60 Squats",
 		            item_url: "https://www.oculus.com/en-us/touch/",               
 		            image_url: "http://cdn-mf1.heartyhosting.com/sites/mensfitness.com/files/rehband_crossfit_2_main.jpg",
 		            buttons: [{
-				              type: "web_url",
-				              url: "https://www.oculus.com/en-us/touch/",
-				              title: "Open Web URL"
-				            }, {
-				              type: "postback",
-				              title: "Call Postback",
-				              payload: "Payload for second bubble",
-				            }]
-	            }]
+		              type: "element_share",
+		              
+									share_contents: { 
+						      attachment: {
+										type: "template",
+										payload: {
+													template_type: "generic",
+													elements: [
+														{
+															title: "Murph",
+															subtitle: "5 Rounds\n20 Pull-ups,\n40 Push-ups,\n60 Squats",
+															image_url: "http://crossfitkumba.com/wp-content/uploads/2014/07/crossfit-kumba-box.jpg",
+															default_action: {
+																type: "web_url",
+																url: "https://www.oculus.com/en-us/rift/"
+															},
+															buttons: [
+																{
+																	type: "web_url",
+																	url: "http://m.me/johnnycrossfit.me?ref=invited_by_24601", 
+																	title: "Can YOU dig it?"
+																}
+															]
+														}
+													]
+												}
+						      }
+		            }
+							}]
+	          }]
 	        }
 	      }
 	    }
+
+			
 	  };  
 	  send(data);
 	}
