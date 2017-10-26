@@ -42,6 +42,7 @@ module.exports = function() {
     var sessionId = findOrCreateSession(senderId);
     var entities = message.nlp.entities;
 
+		console.log("sender: ", senderId);
     console.log("message: ", message);
     console.log("entities: ", entities);
 
