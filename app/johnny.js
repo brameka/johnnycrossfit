@@ -20,25 +20,11 @@ module.exports = function() {
 		switch(payload){
 
 			case 'standby':
-				greeting(data);
-			break;
-
-			case 'booking':
-				booking(data);
-			break;
-			
-			case 'cancellation':
-				cancellation(data);
-			break;
-			
-			case 'settings':
-				settings(data);
+				standby(event);
 			break;
 
 			default:
     }
-
-
 
 	  var data = {
 				recipient: {
@@ -50,6 +36,48 @@ module.exports = function() {
 		};
 	  messenger.send(data);
 	}
+
+	var receive = function(event) {
+    var senderId = event.sender.id;
+    var recipientId = event.recipient.id;
+    var timeOfMessage = event.timestamp;
+    var message = event.message;
+    var messageId = message.mid;
+    var text = message.text;
+    var messageAttachments = message.attachments;
+    var sessionId = findOrCreateSession(senderId);
+    var entities = message.nlp.entities;
+
+		console.log("sender: ", senderId);
+    console.log("message: ", message);
+    console.log("entities: ", entities);
+
+	  switch(text) {
+        case 'greeting':
+          greeting(data);
+        break;
+
+        case 'booking':
+          booking(data);
+        break;
+        
+        case 'cancellation':
+          cancellation(data);
+        break;
+        
+        case 'settings':
+          settings(data);
+        break;
+
+        default:
+    }
+  };
+
+
+
+	var standby = function(data) {
+
+  }
 
 
 	return {
