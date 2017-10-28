@@ -1,6 +1,4 @@
-var request = require('request');
-var bot = require('../app/botservice')();
-
+var johnny = require('../app/johnny')();
 
 module.exports = function(app, router, database){
 
@@ -44,22 +42,23 @@ module.exports = function(app, router, database){
 			
 		  if (data.object == 'page') {
 		    data.entry.forEach(function(pageEntry) {
-		      var pageID = pageEntry.id;
-		      var timeOfEvent = pageEntry.time;
+		      
+					// var pageID = pageEntry.id;
+		      // var timeOfEvent = pageEntry.time;
 
-		      pageEntry.messaging.forEach(function(messagingEvent) {
-		        if (messagingEvent.optin) {
+		      pageEntry.messaging.forEach(function(event) {
+		        if (event.optin) {
 		        	//console.log("Received option: ", messagingEvent);
 		          //receivedAuthentication(messagingEvent);
-		        } else if (messagingEvent.message) {
-		        	bot.receive(messagingEvent);
-		        } else if (messagingEvent.delivery) {
+		        } else if (event.message) {
+		        	johnny.receive(event);
+		        } else if (event.delivery) {
 		          //receivedDeliveryConfirmation(messagingEvent);
 		          //console.log("Received delivery: ", messagingEvent);
-		        } else if (messagingEvent.postback) {
-		          	bot.postback(messagingEvent);
+		        } else if (event.postback) {
+		          johnny.postback(event);
 		        } else {
-		          console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+		          console.log("Webhook received unknown messagingEvent: ", event);
 		        }
 		      });
 		    });

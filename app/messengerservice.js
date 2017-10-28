@@ -10,17 +10,13 @@ module.exports = function() {
   const sessions = {};
 
 	var send = function(data){
-		request({
+		var request = request({
 		    uri: 'https://graph.facebook.com/v2.6/me/messages',
 		    qs: { access_token: PAGE_ACCESS_TOKEN },
 		    method: 'POST',
 		    json: data
-
-		  }).then(function(response, body){
-
-			}).catch(function(err){
-
-			});
+		});
+		return request;
 
 			// , function (error, response, body) {
 		  //   if (!error && response.statusCode == 200) {
@@ -44,7 +40,7 @@ module.exports = function() {
 		    },
 		    sender_action: action
 		};
-		send(data);
+		return send(data);
 	}
 
 	var profile = function(facebookId){
@@ -59,9 +55,19 @@ module.exports = function() {
 		});
 	}
 
+	var startTyping = function(facebookId) {
+		action(facebookId, TYPING_ON);
+	};
+
+	var stopTyping = function(facebookId) {
+		action(facebookId, TYPING_OFF);
+	};
+
 	return {
     send: send,
 		action: action,
-		profile: profile
+		profile: profile,
+		stopTyping: stopTyping,
+		startTyping: startTyping
   }
 }

@@ -3,10 +3,6 @@
 var messenger = require('./messengerservice')();
 
 module.exports = function() {
-	const PAGE_ACCESS_TOKEN = 'EAABygwXeEvIBAAHZCB1oT9t6DL0TaCZBC518p61uKZAVxhZCuACmNeY8sqZBEIEkJgVJch9beSrFZCGyhbgspbmc9byWHyUG4aEP7ZATWDrFWEHxFBzAHinZB6biAbGgt3JVeHJcfVQqJGRz0zsTnQW7LZC9ZBOaCJ4GngYr8yBHifUAZDZD';
-	const WIT_TOKEN = 'J65XVFFFIEHMXQT4PIQ6Q5V5C7TZGE65';
-  const TYPING_ON = 'typing_on';
-  const TYPING_OFF = 'typing_off';
   const sessions = {};
 
 	var postback = function(event) {
@@ -26,15 +22,15 @@ module.exports = function() {
 			default:
     }
 
-	  var data = {
-				recipient: {
-					id: senderId 
-				},
-				message: {
-					text: payload
-				}
-		};
-	  messenger.send(data);
+	  // var data = {
+		// 		recipient: {
+		// 			id: senderId 
+		// 		},
+		// 		message: {
+		// 			text: payload
+		// 		}
+		// };
+	  // messenger.send(data);
 	}
 
 	var receive = function(event) {
@@ -45,7 +41,6 @@ module.exports = function() {
     var messageId = message.mid;
     var text = message.text;
     var messageAttachments = message.attachments;
-    var sessionId = findOrCreateSession(senderId);
     var entities = message.nlp.entities;
 
 		console.log("sender: ", senderId);
@@ -54,36 +49,45 @@ module.exports = function() {
 
 	  switch(text) {
         case 'greeting':
-          greeting(data);
+          greeting(event);
         break;
 
         case 'booking':
-          booking(data);
+          booking(event);
         break;
         
         case 'cancellation':
-          cancellation(data);
+          cancellation(event);
         break;
         
         case 'settings':
-          settings(data);
+          settings(event);
         break;
 
         default:
     }
   };
 
+	var standby = function(event) {
+    messenger.profile().then(function(response){
+      console.log('profile response: ', response);
+      var facebookId = event.sender.id;
+      var data = {
+        recipient: {
+          id: facebookId 
+        },
+        message: {
+          text: 'standing by'
+        }
+      };
+	    messenger.send(data);
+    }).catch(function(error){
 
-
-	var standby = function(data) {
-
+    });
   }
 
-
 	return {
-		postback: postback
+		postback: postback,
+    receive: receive
 	}
-
-
-
 }
