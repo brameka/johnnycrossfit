@@ -29,6 +29,7 @@ module.exports = function() {
 	}
 
 	var profile = function(facebookId) {
+		console.log('messenger profile');
 		return request({
 			uri: 'https://graph.facebook.com/v2.6/' + facebookId,
 			qs: { 

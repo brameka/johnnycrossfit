@@ -70,7 +70,7 @@ module.exports = function() {
   };
 
 	var standby = function(event) {
-    console.log('stanby called:');
+    console.log('standy1');
     var facebookId = event.sender.id;
     messenger.profile(facebookId)
       .then(function(response){
