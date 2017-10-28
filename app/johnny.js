@@ -1,6 +1,7 @@
 'use strict';
 
-var messenger = require('./messengerservice')();
+var messenger = require('./messenger')();
+var messages = require('./messages')();
 
 module.exports = function() {
   const sessions = {};
@@ -69,20 +70,32 @@ module.exports = function() {
   };
 
 	var standby = function(event) {
-    messenger.profile().then(function(response){
-      console.log('profile response: ', response);
-      var facebookId = event.sender.id;
-      var data = {
-        recipient: {
-          id: facebookId 
-        },
-        message: {
-          text: 'standing by'
-        }
-      };
-	    messenger.send(data);
-    }).catch(function(error){
+    console.log('stanby called:');
+    var facebookId = event.sender.id;
+    messenger.profile(facebookId)
+      .then(function(response){
+        var name = response.first_name;
+        sendGreeting(facebookId, name);
+      }).catch(function(error){
+        console.log('error getting profile: ', error);
+      });
+  }
 
+  var sendGreeting = function(facebookId, name) {
+    var greeting = messages.greeting(name);
+    var data = {
+      recipient: {
+        id: facebookId 
+      },
+      message: {
+        text: greeting
+      }
+    };
+    messenger.send(data)
+    .then(function(response){
+        console.log('greeting sent...');
+    }).catch(function(error){
+        console.log('error getting profile: ', error);
     });
   }
 

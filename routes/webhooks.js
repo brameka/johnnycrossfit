@@ -6,6 +6,24 @@ module.exports = function(app, router, database){
 
 	var VALIDATION_TOKEN = "murph_grace_jackie_johnny";
 
+		router.get('/test/postback', function(req, res) {
+			var data = {
+				sender: {
+					id: '1486936298049783',
+				},
+				recipient: {
+					id: '1486936298049783',
+				},
+				timestamp: '12345',
+				postback: {
+					payload: 'standby'
+				}
+			};
+
+			johnny.postback(data);
+			res.status(200).send('test');
+		});
+
 		router.get('/users/create', function(req, res) {
 			users.createUser('fb222');
 			res.status(200).send('test');
