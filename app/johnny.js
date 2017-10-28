@@ -69,6 +69,7 @@ module.exports = function() {
   };
 
 	var standby = function(event) {
+    console.log('stanby called:');
     messenger.profile().then(function(response){
       console.log('profile response: ', response);
       var facebookId = event.sender.id;
