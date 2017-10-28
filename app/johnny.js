@@ -17,7 +17,7 @@ module.exports = function() {
 		switch(payload){
 
 			case 'standby':
-				standby(event);
+				standbyDelayed(event);
 			break;
 
 			default:
@@ -69,8 +69,17 @@ module.exports = function() {
     }
   };
 
+  var standbyDelayed = function(event) {
+    console.log('standby delayed');
+    var facebookId = event.sender.id;
+    messenger.startTyping(facebookId);
+		setTimeout(function () {
+				standby(event);
+		}, 5000);
+  }
+
 	var standby = function(event) {
-    console.log('standy1');
+    console.log('standby...');
     var facebookId = event.sender.id;
     messenger.profile(facebookId)
       .then(function(response){
