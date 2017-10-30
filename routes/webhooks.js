@@ -67,19 +67,22 @@ module.exports = function(app, router, database){
 		      // var timeOfEvent = pageEntry.time;
 
 		      pageEntry.messaging.forEach(function(event) {
-		        if (event.optin) {
-		        	//console.log("Received option: ", messagingEvent);
-		          //receivedAuthentication(messagingEvent);
-		        } else if (event.message) {
-		        	johnny.receive(event);
-		        } else if (event.delivery) {
-		          //receivedDeliveryConfirmation(messagingEvent);
-		          //console.log("Received delivery: ", messagingEvent);
-		        } else if (event.postback) {
-		          johnny.postback(event);
-		        } else {
-		          console.log("Webhook received unknown messagingEvent: ", event);
-		        }
+						johnny.process(event);
+		        // if (event.optin) {
+		        // 	//console.log("Received option: ", messagingEvent);
+		        //   //receivedAuthentication(messagingEvent);
+		        // } else if (event.message) {
+		        // 	johnny.receive(event);
+		        // } else if (event.delivery) {
+		        //   //receivedDeliveryConfirmation(messagingEvent);
+		        //   //console.log("Received delivery: ", messagingEvent);
+		        // } else if (event.postback) {
+		        //   johnny.postback(event);
+		        // } else {
+		        //   console.log("Webhook received unknown messagingEvent: ", event);
+		        // }
+
+
 		      });
 		    });
 		  }

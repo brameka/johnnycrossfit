@@ -1,6 +1,11 @@
 'use strict';
 
 module.exports = function(db) {
+
+	var getWod = function(id) {
+		var ref = db.ref('wods/' + id);
+		return ref.once('value');
+	}
 	
 	var getRandomWods = function(count) {
 		var ref = db.ref('wods');
@@ -11,7 +16,7 @@ module.exports = function(db) {
 		//endAt('')
 		//limitToFirst(10)
 		//limitToLast(10)
-		
+
 		return ref.once('value');
 	};
 

@@ -58,7 +58,7 @@ module.exports = function() {
 		return send(data);
 	}
 
-	var postGeneric = function(facebookId, title, elements) {
+	var generic = function(facebookId, elements) {
 		var data = {
 			recipient: {
 				id: facebookId
@@ -88,6 +88,7 @@ module.exports = function() {
     send: send,
 		action: action,
 		profile: profile,
+		generic: generic,
 		stopTyping: stopTyping,
 		startTyping: startTyping
   }
