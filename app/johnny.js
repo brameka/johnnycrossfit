@@ -3,7 +3,7 @@
 var messenger = require('./messenger')();
 var messages = require('./messages')();
 
-module.exports = function() {
+module.exports = function(users, wods) {
   const sessions = {};
 
 	var postback = function(event) {
@@ -17,21 +17,11 @@ module.exports = function() {
 		switch(payload){
 
 			case 'standby':
-				standbyDelayed(event);
+				standby(event);
 			break;
 
 			default:
     }
-
-	  // var data = {
-		// 		recipient: {
-		// 			id: senderId 
-		// 		},
-		// 		message: {
-		// 			text: payload
-		// 		}
-		// };
-	  // messenger.send(data);
 	}
 
 	var receive = function(event) {
@@ -69,22 +59,47 @@ module.exports = function() {
     }
   };
 
-  var standbyDelayed = function(event) {
-    console.log('standby delayed');
+  var standby = function(event) {
+    console.log('calling standby');
     var facebookId = event.sender.id;
     messenger.startTyping(facebookId);
-		setTimeout(function () {
-				standby(event);
-		}, 5000);
+    start(event);
+    
+    //https://gist.github.com/anantn/4323949
+    // getUser(facebookId).then(function(snapshot) {
+    //   if (snapshot.exists()) { 
+    //     var user = snapshot.val();
+    //   } else {
+    //     users.createUser(facebookId);
+    //   }
+    //   start(event);
+    // }).catch(function(error) {
+    //   console.log('Error getting fb user: ', error);
+    // });
   }
 
-	var standby = function(event) {
-    console.log('standby...');
+	var start = function(event) {
+    console.log('calling start');
     var facebookId = event.sender.id;
     messenger.profile(facebookId)
       .then(function(response){
-        var name = response.first_name;
-        sendGreeting(facebookId, name);
+        console.log('response from messenger profile');
+        var firstname = response.first_name;
+        var data = {
+          firstname: firstname,
+          lastname: response.last_name,
+          profile_pic: response.profile_pic,
+          gender: response.gender,
+          locale: response.locale,
+          timezone: response.timezone,
+          context: {
+            topic: 'crossfit',
+            message: 'hero'
+          }
+        }
+
+        users.createUser(facebookId, data);
+        sendGreeting(facebookId, firstname);
       }).catch(function(error){
         console.log('error getting profile: ', error);
       });
@@ -106,6 +121,17 @@ module.exports = function() {
     }).catch(function(error){
         console.log('error getting profile: ', error);
     });
+  }
+
+  var getUser = function(facebookId) {
+    return users.getUser(facebookId);
+    
+    
+    // users.getUser(facebookId).then(function(snapshot) {
+    //   res.status(200).send(snapshot.val());
+    // }).catch(function(error) {
+    //   res.status(404).send('something went wrong with the fb query');
+    // });
   }
 
 	return {

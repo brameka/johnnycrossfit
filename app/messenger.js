@@ -29,7 +29,7 @@ module.exports = function() {
 	}
 
 	var profile = function(facebookId) {
-		console.log('messenger profile');
+		console.log('calling messenger profile');
 		return request({
 			uri: 'https://graph.facebook.com/v2.6/' + facebookId,
 			qs: { 
@@ -39,6 +39,41 @@ module.exports = function() {
 			method: 'GET',
 			json: true
 		});
+	}
+
+	var postAttachment = function(facebookId, type, attachmentId) {
+		var data = {
+		    recipient: {
+		      id: facebookId
+		    },
+				message: {
+					attachment: {
+						type: type,
+						payload: {
+							attachment_id: attachmentId
+						}
+					}
+				}
+		};
+		return send(data);
+	}
+
+	var postGeneric = function(facebookId, title, elements) {
+		var data = {
+			recipient: {
+				id: facebookId
+			},
+			message: {
+				attachment: {
+					type: 'template',
+					payload: {
+						template_type: 'generic',
+						elements: elements
+					}
+				}
+			}
+		}
+		send(data);
 	}
 
 	var startTyping = function(facebookId) {

@@ -1,8 +1,10 @@
-var johnny = require('../app/johnny')();
+
 
 module.exports = function(app, router, database){
 
 	var users = require('../app/userservice')(database);
+	var wods = require('../app/wodservice')(database);
+	var johnny = require('../app/johnny')(users, wods);
 
 	var VALIDATION_TOKEN = "murph_grace_jackie_johnny";
 

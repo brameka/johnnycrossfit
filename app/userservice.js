@@ -12,14 +12,15 @@ module.exports = function(db) {
 		return ref.once('value');
 	}
 
-	var createUser = function(facebookId) {
-		var users = db.ref('users/' + facebookId).set({
-			name: 'test'
-		});
+	var createUser = function(facebookId, data) {
+		console.log('calling create user');
+		db.ref('users/' + facebookId).set(data);
+		console.log('after create user');
 	}
 
 	var updateUser = function(facebookId) {
 		var uid = 2;
+		
 		// the data for the object being created/updated.
 		var user = {
 				name: "Luis",
