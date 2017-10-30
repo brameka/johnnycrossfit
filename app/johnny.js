@@ -9,6 +9,7 @@ module.exports = function(users, wods) {
   const sessions = {};
 
   var process = function(event) {
+    var facebookId = event.sender.id;
     console.log('process...');
     getUser(facebookId).then(function(snapshot) {
       var user = {};
