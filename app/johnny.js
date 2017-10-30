@@ -2,21 +2,24 @@
 
 var messenger = require('./messenger')();
 var messages = require('./messages')();
+var _ = require('lodash');
 
 module.exports = function(users, wods) {
   const application = 'crossfit';
   const sessions = {};
 
   var process = function(event) {
+    console.log('process...');
     getUser(facebookId).then(function(snapshot) {
+      var user = {};
       if (snapshot.exists()) { 
         console.log('user exists:')
-        var user = snapshot.val();
-        process(event, user);
+        user = snapshot.val();
       } else {
         console.log('user doesnt exist');
-        createUser(facebookId, {});
+        createUser(facebookId);
       }
+      processEvent(event, user);
     }).catch(function(error) {
       console.log('Error getting fb user: ', error);
       createUser(facebookId, {});
@@ -24,6 +27,7 @@ module.exports = function(users, wods) {
   }
 
   var processEvent = function(event, user) {
+    console.log('process event');
     if (event.message) {
       processMessage(event, user);
     } else if (event.postback) {
@@ -36,6 +40,7 @@ module.exports = function(users, wods) {
   var processPostback = function(event, user) {
     var facebookId = event.sender.id;
 	  var payload = event.postback.payload;
+    console.log('process postback: ', payload);
     
     switch(payload){
 
@@ -44,7 +49,7 @@ module.exports = function(users, wods) {
 			break;
 
 			default:
-        selectWod(event);
+        selectWod(event, user);
     }
   } 
 
@@ -77,35 +82,16 @@ module.exports = function(users, wods) {
 	  var recipientId = event.recipient.id;
 	  var timeOfPostback = event.timestamp;
 	  var payload = event.postback.payload;
-    // get 5 random wods from categories
-    var results = [1,2,3,4,5];
-    var elements = [];
-    elements.push({
-      title: 'HERO - Murph',
-      subtitle: 'Death By EMOM,\n7 Pull-ups,\n7 Thrusters 35/25kg,\n7 Burpees',
-      item_url: 'http://crossfitkumba.com/wp-content/uploads/2014/07/crossfit-kumba-box.jpg',
-      buttons: [
-        {
-          type: 'postback',
-          title: 'I Want Some',
-          payload: 'wodId'
-        },
-        {
-          type: 'postback',
-          title: 'More Like This',
-          payload: 'category'
-        },
-        {
-          type: 'element_share'
-        }
-      ]
-    });
 
-    // create data object to send to generic template
+    // get 5 random wods from categories
+    var elements = [];
+    _.each([1,2,3,4,5], function(value) {
+      elements.push(wods.getElement());
+    });
     messenger.generic(facebookId, elements);
   }
 
-  var selectWod = function(event) {
+  var selectWod = function(event, user) {
     var senderId = event.sender.id;
 	  var recipientId = event.recipient.id;
 	  var timeOfPostback = event.timestamp;
