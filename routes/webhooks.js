@@ -2,9 +2,9 @@
 
 module.exports = function(app, router, database){
 
-	var users = require('../app/userservice')(database);
-	var wods = require('../app/wodservice')(database);
-	var johnny = require('../app/johnny')(users, wods);
+	var users = require('../app/services/userservice')(database);
+	var wods = require('../app/services/wodservice')(database);
+	var johnny = require('../app/johnny')(users, wods, database);
 
 	var VALIDATION_TOKEN = "murph_grace_jackie_johnny";
 
@@ -21,7 +21,6 @@ module.exports = function(app, router, database){
 					payload: 'wod'
 				}
 			};
-
 			johnny.process(data);
 			res.status(200).send('test');
 		});

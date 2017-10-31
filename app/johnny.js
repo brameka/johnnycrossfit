@@ -2,9 +2,10 @@
 
 
 var introSequence = require('./sequence/intro.sequence')();
+var introSequence = require('./sequence/intro.sequence')();
 var _ = require('lodash');
 
-module.exports = function(users, wods) {
+module.exports = function(users, database) {
   const application = 'crossfit';
   const sessions = {};
 

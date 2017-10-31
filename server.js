@@ -12,7 +12,7 @@
 var express    = require('express');
 var app        = express();
 var bodyParser = require('body-parser');
-var firebase   = require('./app/fireservice')();
+var firebase   = require('./app/services/fireservice')();
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
