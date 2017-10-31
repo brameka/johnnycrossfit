@@ -9,8 +9,17 @@ module.exports = function(users, wods) {
   const sessions = {};
 
   var process = function(event) {
-    var facebookId = event.sender.id;
     console.log('process...');
+    if (event.message || event.postback) {
+      preprocess(event);
+    } else {
+      console.log("Webhook received unknown messagingEvent: ", event);
+    }
+  }
+
+  var preprocess = function(event) {
+    console.log('preprocess...');
+    var facebookId = event.sender.id;
     getUser(facebookId).then(function(snapshot) {
       var user = {};
       if (snapshot.exists()) { 
