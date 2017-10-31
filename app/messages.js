@@ -3,11 +3,16 @@
 module.exports = function() {
 
   var greeting = function(name) {
-    var message = 'Hi ' + name + ', I\'m Johnny Crossfit and I just got no rep\'d mid thruster';
+    var message = 'Hi ' + name + ', I\'m Johnny, I just no rep\'d my burpee muscle-up to msg u back...';
     return message;
   }
 
+  var intro = function() {
+    var message = 'I\'ll give you a list of mouthwatering wods on demand whenever you say my name.'
+  }
+
   return {
-		greeting: greeting
+		greeting: greeting,
+    intro: intro
 	}
 }

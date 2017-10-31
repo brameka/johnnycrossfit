@@ -1,5 +1,5 @@
 'use strict';
-
+var messenger = require('./messenger')();
 module.exports = function(db) {
 
 	var getUsers = function(facebookId) {
@@ -12,15 +12,11 @@ module.exports = function(db) {
 		return ref.once('value');
 	}
 
-	var createUser = function(facebookId, data) {
-		console.log('calling create user');
-		db.ref('users/' + facebookId).set(data);
-		console.log('after create user');
-	}
+	
 
 	var updateUser = function(facebookId) {
 		var uid = 2;
-		
+
 		// the data for the object being created/updated.
 		var user = {
 				name: "Luis",
@@ -44,6 +40,38 @@ module.exports = function(db) {
 				}
 		});
 	}
+
+	var createUser = function(facebookId) {
+		getFbProfileAndCreateUser(facebookId);
+	}
+
+	var createFirebaseUser = function(facebookId, data) {
+		console.log('calling create user');
+		db.ref('users/' + facebookId).set(data);
+		console.log('after create user');
+	}
+
+	var getFbProfileAndCreateUser = function(facebookId) {
+    messenger.profile(facebookId)
+      .then(function(response){
+        console.log('response from messenger profile in create user');
+        var firstname = response.first_name;
+        var data = {
+          firstname: response.first_name,
+          lastname: response.last_name,
+          profile_pic: response.profile_pic,
+          gender: response.gender,
+          locale: response.locale,
+          timezone: response.timezone,
+          context: {
+            topic: application
+          }
+        }
+        createFirebaseUser(facebookId, data);
+      }).catch(function(error){
+        console.log('error getting profile: ', error);
+      });
+  }
 
 	return {
     getUser: getUser,
