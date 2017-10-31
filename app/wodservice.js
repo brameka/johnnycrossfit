@@ -53,6 +53,7 @@ module.exports = function(db) {
 	return {
 		getRandomWods: getRandomWods,
 		getWodByTag: getWodByTag,
-		getWodByTags: getWodByTags
+		getWodByTags: getWodByTags,
+		getElement: getElement
 	}
 }
