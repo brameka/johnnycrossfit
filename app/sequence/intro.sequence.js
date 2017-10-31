@@ -1,13 +1,16 @@
-var messages = require('../messages')();
-var messenger = require('../messenger')();
+var messages = require('../serivces/messages')();
+var messenger = require('../serivces/messenger')();
 var _ = require('lodash');
 
-module.exports = function() {
+module.exports = function(users) {
+
+	var pumpedAttachmentId = '544081972605619';
 
   var start = function(event) {
     console.log('calling start');
 		messenger.startTyping();
     var facebookId = event.sender.id;
+		users.createUser(facebookId);
     profile(facebookId);
   }
 
@@ -35,12 +38,35 @@ module.exports = function() {
     };
     messenger.send(data)
     .then(function(response){
-			messenger.startTyping();
-      setTimeout(intro(event), 4000);
+			postPumpedImage(facebookId);
     }).catch(function(error){
         console.log('error getting profile: ', error);
     });
   }
+
+	var postPumpedImage = function(facebookId) {
+		var data = {
+      recipient: {
+        id: facebookId 
+      },
+      message: {
+        attachment: {
+					type: image,
+					payload: {
+						attachment_id: 'pumpedAttachmentId'
+					}
+				}
+      }
+    };
+		messenger.send(data)
+    .then(function(response){
+      messenger.startTyping();
+      setTimeout(intro(event), 4000);
+    }).catch(function(error){
+        console.log('error getting profile: ', error);
+    });
+		
+	}
 
   var intro = function(facebookId) {
 		console.log('intro..');

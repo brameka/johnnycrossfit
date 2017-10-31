@@ -2,9 +2,8 @@
 
 module.exports = function(app, router, database){
 
-	var users = require('../app/services/userservice')(database);
-	var wods = require('../app/services/wodservice')(database);
-	var johnny = require('../app/johnny')(users, wods, database);
+
+	var johnny = require('../app/johnny')(database);
 
 	var VALIDATION_TOKEN = "murph_grace_jackie_johnny";
 

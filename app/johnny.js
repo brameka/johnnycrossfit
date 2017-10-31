@@ -1,13 +1,15 @@
 'use strict';
 
-
-var introSequence = require('./sequence/intro.sequence')();
-var introSequence = require('./sequence/intro.sequence')();
 var _ = require('lodash');
 
-module.exports = function(users, database) {
+module.exports = function(database) {
+
+  var users = require('./services/userservice')(database);
+	var wods = require('./services/wodservice')(database);
+  var introSequence = require('./sequence/intro.sequence')(users);
+  var wodSequence = require('./sequence/wod.sequence')(wods);
+
   const application = 'crossfit';
-  const sessions = {};
 
   var process = function(event) {
     console.log('process...');
@@ -16,6 +18,7 @@ module.exports = function(users, database) {
     if (event.message || event.postback) {
       preprocess(event);
     }
+
   }
 
   var preprocess = function(event) {
@@ -28,12 +31,10 @@ module.exports = function(users, database) {
         user = snapshot.val();
       } else {
         console.log('user doesnt exist');
-        users.createUser(facebookId);
       }
       processEvent(event, user);
     }).catch(function(error) {
       console.log('Error getting firebase user: ', error);
-      users.createUser(facebookId);
       processEvent(event, user);
     });
   }
@@ -57,11 +58,11 @@ module.exports = function(users, database) {
     switch(payload){
 
 			case 'standby':
-				standby(event);
+				introSequence.start(event);
 			break;
 
 			default:
-        selectWod(event, user);
+        //selectWod(event, user);
     }
   } 
 
@@ -71,6 +72,14 @@ module.exports = function(users, database) {
     var messageId = message.mid;
     var text = message.text;
 
+    switch(text.toLowerCase()) {
+      case 'wod':
+        wodSequence.start(event);
+      break;
+
+      default:
+    }
+
     // var messageAttachments = message.attachments;
     // var entities = message.nlp.entities;
     // var recipientId = event.recipient.id;
@@ -79,50 +88,7 @@ module.exports = function(users, database) {
     // console.log("sender: ", senderId);
     // console.log("message: ", message);
     // console.log("entities: ", entities);
-
-    switch(text.toLowerCase()) {
-      case 'wod':
-        getWods(event);
-      break;
-
-      default:
-    }
   }
-
-  var standby = function(event) {
-    console.log('calling standby');
-    var facebookId = event.sender.id;
-    users.createUser(facebookId);
-    introSequence.start();
-  }
-
-
-
-
-
-  // get wods
-  // var getWods = function(event) {
-  //   var facebookId = event.sender.id;
-	//   var message = event.message;
-  //   var messageId = message.mid;
-  //   var text = message.text;
-
-  //   var elements = [];
-  //   _.each([1,2,3,4,5], function(value) {
-  //     elements.push(wods.getElement());
-  //   });
-  //   messenger.generic(facebookId, elements);
-  // }
-
-  // var selectWod = function(event, user) {
-  //   var senderId = event.sender.id;
-	//   var recipientId = event.recipient.id;
-	//   var timeOfPostback = event.timestamp;
-	//   var payload = event.postback.payload;
-  // }
-
-  // get Started
-  
 
 	return {
     process: process
