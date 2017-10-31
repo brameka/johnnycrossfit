@@ -22,8 +22,9 @@ module.exports = function(users, wods) {
       }
       processEvent(event, user);
     }).catch(function(error) {
-      console.log('Error getting fb user: ', error);
+      console.log('Error getting firebase user: ', error);
       createUser(facebookId, {});
+      processEvent(event, user);
     });
   }
 
@@ -55,14 +56,15 @@ module.exports = function(users, wods) {
   } 
 
   var processMessage = function(event, user) {
-    var senderId = event.sender.id;
-    var recipientId = event.recipient.id;
-    var timeOfMessage = event.timestamp;
+    var facebookId = event.sender.id;
     var message = event.message;
     var messageId = message.mid;
     var text = message.text;
-    var messageAttachments = message.attachments;
-    var entities = message.nlp.entities;
+
+    // var messageAttachments = message.attachments;
+    // var entities = message.nlp.entities;
+    // var recipientId = event.recipient.id;
+    // var timeOfMessage = event.timestamp;
 
     // console.log("sender: ", senderId);
     // console.log("message: ", message);
@@ -70,7 +72,7 @@ module.exports = function(users, wods) {
 
     switch(text.toLowerCase()) {
       case 'wod':
-        getWods();
+        getWods(event);
       break;
 
       default:
@@ -80,9 +82,9 @@ module.exports = function(users, wods) {
   // get wods
   var getWods = function(event) {
     var facebookId = event.sender.id;
-	  var recipientId = event.recipient.id;
-	  var timeOfPostback = event.timestamp;
-	  var payload = event.postback.payload;
+	  var message = event.message;
+    var messageId = message.mid;
+    var text = message.text;
 
     // get 5 random wods from categories
     var elements = [];

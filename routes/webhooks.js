@@ -18,11 +18,11 @@ module.exports = function(app, router, database){
 				},
 				timestamp: '12345',
 				postback: {
-					payload: 'standby'
+					payload: 'wod'
 				}
 			};
 
-			johnny.postback(data);
+			johnny.process(data);
 			res.status(200).send('test');
 		});
 
