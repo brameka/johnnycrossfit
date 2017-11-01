@@ -7,7 +7,8 @@ module.exports = function(database) {
   var users = require('./services/userservice')(database);
 	var wods = require('./services/wodservice')(database);
   var introSequence = require('./sequence/intro.sequence')(users);
-  var wodSequence = require('./sequence/wod.sequence')(wods);
+  var wodSequence = require('./sequence/wod.sequence')(users, wods);
+  var workoutSequence = require('./sequence/wod.sequence')(users, wods);
 
   const application = 'crossfit';
 
@@ -62,7 +63,7 @@ module.exports = function(database) {
 			break;
 
 			default:
-        //selectWod(event, user);
+        workoutSequence(event, user);
     }
   } 
 

@@ -2,7 +2,7 @@ var messages = require('../serivces/messages')();
 var messenger = require('../serivces/messenger')();
 var _ = require('lodash');
 
-module.exports = function(users) {
+module.exports = function(users, wods) {
 
   var start = function(event) {
     console.log('calling wod sequence start');

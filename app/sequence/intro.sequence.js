@@ -53,7 +53,7 @@ module.exports = function(users) {
         attachment: {
 					type: image,
 					payload: {
-						attachment_id: 'pumpedAttachmentId'
+						attachment_id: pumpedAttachmentId
 					}
 				}
       }
@@ -65,7 +65,6 @@ module.exports = function(users) {
     }).catch(function(error){
         console.log('error getting profile: ', error);
     });
-		
 	}
 
   var intro = function(facebookId) {
